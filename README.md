@@ -23,25 +23,52 @@ or add
 
 to the `require` section of your `composer.json` file.
 
-## Usage
+## Adding to the model
 
 To use ConstantLabelBehavior, insert the following code to your Model class:
 
 ```php
 use common\behaviors\ConstantLabelBehavior;
 
-public function behaviors()
+class MyModel extends Model
 {
-  return [
-      [
-          'class' => ConstantLabelBehavior::className(),
-          'constantLabels' => [
-              'status' => [
-                  self::STATUS_ACTIVE  => 'User is active',
-                  self::STATUS_DELETED => 'User deleted',
-              ]
-          ],
-      ]
-  ];
+    const STATUS_ACTIVE  = 10;
+    const STATUS_DELETED = 0;
+
+    public function behaviors()
+    {
+      return [
+          [
+              'class' => ConstantLabelBehavior::className(),
+              'constantLabels' => [
+                  'status' => [
+                      self::STATUS_ACTIVE  => 'User is active',
+                      self::STATUS_DELETED => 'User deleted',
+                  ]
+              ],
+          ]
+      ];
+    }
 }
+```
+
+## Usage
+
+```php
+$model = new MyModel();
+
+
+// return key-value array with constant values as key and constant label as value
+$labels = $model->getConstantLabels('status');
+
+// return label for one constant
+$label = $model->getConstant('status', $model::STATUS_ACTIVE);
+
+// return values of all constants
+$values = $model->getConstantValues('status'); // [10, 0]
+
+// also it can be use in validation rules
+[
+    ['status', 'in', 'range' => $model->getConstantValues('status')],
+]
 ```

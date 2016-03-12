@@ -66,8 +66,8 @@ class ConstantLabelBehavior extends Behavior
      *
      * @param  string $field field name
      *
-     * @return string[]null  array of labels if $field  is exists or
-     *                       'null' if $field is not exists
+     * @return string[]|null  array of labels if $field  is exists or
+     *                        'null' if $field is not exists
      */
     public function getConstantLabels($field)
     {
@@ -83,5 +83,22 @@ class ConstantLabelBehavior extends Behavior
 
         return $labels[$field];
     } // end getConstantLabels()
+
+    /**
+     * Get all constant values for a field. This can be use for in-range validator
+     *
+     * @param $field
+     *
+     * @return mixed[]|null  array of constant values if $field  is exists or
+     *                       'null' if $field is not exists
+     */
+    public function getConstantValues($field)
+    {
+        $labels = $this->getConstantLabels($field);
+
+        if (!$labels) return null;
+
+        return array_keys($labels);
+    } // end getConstantValues()
 
 }
