@@ -30,6 +30,9 @@ To use ConstantLabelBehavior, insert the following code to your Model class:
 ```php
 use common\behaviors\ConstantLabelBehavior;
 
+/**
+ * @mixin ConstantLabelBehavior
+ */
 class MyModel extends Model
 {
     const STATUS_ACTIVE  = 10;
